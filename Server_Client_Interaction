@@ -1,0 +1,36 @@
+
+//Dsender.java
+import java.net.*;
+import java.util.Scanner;
+
+public class Dsender{
+public static void main(String[] args) throws Exception{ DatagramSocket ds=new DatagramSocket(); DatagramPacket dp;
+InetAddress ip=InetAddress.getByName("localhost"); String str;
+Scanner sc=new Scanner(System.in); while(true){ System.out.print("Enter Msg:"); str=sc.nextLine();
+dp=new DatagramPacket(str.getBytes(),str.length(),ip,3000); ds.send(dp);
+}
+}}
+// Dreceiver.java
+import java.net.*;
+
+public class Dreceiver {
+     public static void main(String[] args) throws Exception {
+          String str = "", concat = "";
+          DatagramSocket ds = new DatagramSocket(3000);
+          byte[] buf;
+          DatagramPacket dp;
+          while (true) {
+               buf = new byte[1024];
+               dp = new DatagramPacket(buf, 1024);
+               ds.receive(dp);
+               str = new String(dp.getData(), 0, dp.getLength());
+               if (!str.equals("exit")) {
+                    concat += str;
+               } else {
+                    break;
+               }
+          }
+          System.out.println(concat);
+          ds.close();
+     }
+}
